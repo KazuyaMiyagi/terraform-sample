@@ -10,7 +10,7 @@ data "aws_iam_policy_document" "allow_ssm_get_parameters" {
   }
 }
 
-data "aws_iam_policy_document" "ecs_task_execution_role_assume_role_policy" {
+data "aws_iam_policy_document" "assume_role_policy_for_ecs_task_execution_role" {
   statement {
     actions = [
       "sts:AssumeRole"
@@ -31,7 +31,7 @@ resource "aws_iam_policy" "allow_ssm_get_parameters" {
 
 resource "aws_iam_role" "ecs_task_execution_role" {
   name               = "ecsTaskExecutionRole"
-  assume_role_policy = data.aws_iam_policy_document.ecs_task_execution_role_assume_role_policy.json
+  assume_role_policy = data.aws_iam_policy_document.assume_role_policy_for_ecs_task_execution_role.json
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_attached_policy_1" {
