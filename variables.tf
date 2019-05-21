@@ -1,18 +1,3 @@
-variable environment {
-  type    = string
-  default = "dev"
-}
-
-variable aws_account {
-  type    = string
-  default = ""
-}
-
-variable aws_region {
-  type    = string
-  default = "ap-northeast-1"
-}
-
 variable "laravel_environments" {
   type = map(string)
   default = {

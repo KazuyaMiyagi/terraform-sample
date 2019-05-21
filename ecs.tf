@@ -9,8 +9,8 @@ resource "aws_ecs_task_definition" "laravel" {
   memory             = "512"
   execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
   container_definitions = templatefile("templates/laravel.json.tmpl", {
-    aws_account = var.aws_account,
-    aws_region  = var.aws_region,
+    aws_account = data.aws_caller_identity.current.account_id,
+    aws_region  = data.aws_region.current.name,
     secrets     = merge(var.laravel_environments, var.laravel_secure_environments)
   })
   requires_compatibilities = [
