@@ -35,5 +35,80 @@
         "awslogs-stream-prefix": "ecs"
       }
     }
+  },
+  {
+    "name": "laravel-scheduler",
+    "image": "${repository_url}:develop",
+    "cpu": 0,
+    "portMappings": [
+    ],
+    "essential": true,
+    "entryPoint": [
+      "/usr/sbin/cron"
+    ],
+    "command": [
+      "-f"
+    ],
+    "environment": [
+    ],
+    "mountPoints": [],
+    "volumesFrom": [],
+    "secrets": [
+%{ for key, value in secrets ~}
+      {
+        "name": "${key}",
+        "valueFrom": "/laravel/${key}"
+      }
+%{ if length(keys(secrets)) != index(keys(secrets), key) + 1  }
+      ,
+%{ endif }
+%{ endfor ~}
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "/ecs/laravel",
+        "awslogs-region": "${aws_region}",
+        "awslogs-stream-prefix": "ecs"
+      }
+    }
+  },
+  {
+    "name": "laravel-worker",
+    "image": "${repository_url}:develop",
+    "cpu": 0,
+    "portMappings": [
+    ],
+    "essential": true,
+    "entryPoint": [
+      "php"
+    ],
+    "command": [
+      "artisan",
+      "queue:work"
+    ],
+    "environment": [
+    ],
+    "mountPoints": [],
+    "volumesFrom": [],
+    "secrets": [
+%{ for key, value in secrets ~}
+      {
+        "name": "${key}",
+        "valueFrom": "/laravel/${key}"
+      }
+%{ if length(keys(secrets)) != index(keys(secrets), key) + 1  }
+      ,
+%{ endif }
+%{ endfor ~}
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "/ecs/laravel",
+        "awslogs-region": "${aws_region}",
+        "awslogs-stream-prefix": "ecs"
+      }
+    }
   }
 ]
