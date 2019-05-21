@@ -1,4 +1,4 @@
-resource "aws_ecs_cluster" "laravel-cluster" {
+resource "aws_ecs_cluster" "laravel_cluster" {
   name = "laravel-cluster"
 }
 
