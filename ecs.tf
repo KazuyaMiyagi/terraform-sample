@@ -1,5 +1,5 @@
-resource "aws_ecs_cluster" "laravel_cluster" {
-  name = "laravel-cluster"
+resource "aws_ecs_cluster" "laravel" {
+  name = "laravel"
 }
 
 resource "aws_ecs_task_definition" "laravel" {
