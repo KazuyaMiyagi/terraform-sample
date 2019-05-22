@@ -1,3 +1,5 @@
+# cloudtrail
+
 resource "aws_s3_bucket" "cloudtrail" {
   bucket = "cloudtrail-${data.aws_caller_identity.current.account_id}"
   acl    = "private"
@@ -9,7 +11,8 @@ resource "aws_s3_bucket" "cloudtrail" {
     }
   }
 }
-resource "aws_s3_bucket_public_access_block" "example" {
+
+resource "aws_s3_bucket_public_access_block" "cloudtrail" {
   bucket                  = aws_s3_bucket.cloudtrail.id
   block_public_acls       = true
   block_public_policy     = true
@@ -71,4 +74,52 @@ data "aws_iam_policy_document" "cloudtrail" {
 resource "aws_s3_bucket_policy" "cloudtrail" {
   bucket = aws_s3_bucket.cloudtrail.id
   policy = data.aws_iam_policy_document.cloudtrail.json
+}
+
+# lb log
+
+resource "aws_s3_bucket" "lb" {
+  bucket = "lb-${data.aws_caller_identity.current.account_id}"
+  acl    = "private"
+
+  lifecycle_rule {
+    enabled = true
+    expiration {
+      days = 180
+    }
+  }
+}
+
+resource "aws_s3_bucket_public_access_block" "lb" {
+  bucket                  = aws_s3_bucket.lb.id
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+data "aws_iam_policy_document" "lb" {
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "s3:PutObject"
+    ]
+
+    resources = [
+      "${aws_s3_bucket.lb.arn}/*"
+    ]
+
+    principals {
+      type = "AWS"
+      identifiers = [
+        data.aws_elb_service_account.main.arn
+      ]
+    }
+  }
+}
+
+resource "aws_s3_bucket_policy" "lb" {
+  bucket = aws_s3_bucket.lb.id
+  policy = data.aws_iam_policy_document.lb.json
 }
