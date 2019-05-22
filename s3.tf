@@ -9,6 +9,13 @@ resource "aws_s3_bucket" "cloudtrail" {
     }
   }
 }
+resource "aws_s3_bucket_public_access_block" "example" {
+  bucket                  = aws_s3_bucket.cloudtrail.id
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
 
 data "aws_iam_policy_document" "cloudtrail" {
   statement {
