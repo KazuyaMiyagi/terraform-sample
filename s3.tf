@@ -1,5 +1,13 @@
 resource "aws_s3_bucket" "cloudtrail" {
   bucket = "cloudtrail-${data.aws_caller_identity.current.account_id}"
+  acl    = "private"
+
+  lifecycle_rule {
+    enabled = true
+    expiration {
+      days = 180
+    }
+  }
 }
 
 data "aws_iam_policy_document" "cloudtrail" {
