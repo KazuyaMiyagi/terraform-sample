@@ -1,6 +1,2 @@
-export AWS_USER=
-export PROMPT="%F{blue}AWS:(%F{red}${AWS_USER}%F{blue})%f ${PROMPT}"
-
 export AWS_DEFAULT_REGION=
-export AWS_ACCESS_KEY_ID=
-export AWS_SECRET_ACCESS_KEY=
+export AWS_PROFILE=
