@@ -35,10 +35,12 @@ resource "aws_codebuild_project" "laravel_container_builder" {
     type = "NO_ARTIFACTS"
   }
 
-  # Terraform v0.11.14 does not support cache type LOCAL
-  # https://github.com/terraform-providers/terraform-provider-aws/issues/7643
-  lifecycle {
-    ignore_changes = ["cache"]
+  cache {
+    type = "LOCAL"
+    modes = [
+      "LOCAL_DOCKER_LAYER_CACHE",
+      "LOCAL_SOURCE_CACHE"
+    ]
   }
 
   depends_on = [
@@ -126,10 +128,11 @@ BUILDSPEC
     type = "NO_ARTIFACTS"
   }
 
-  # Terraform v0.11.14 does not support cache type LOCAL
-  # https://github.com/terraform-providers/terraform-provider-aws/issues/7643
-  lifecycle {
-    ignore_changes = ["cache"]
+  cache {
+    type = "LOCAL"
+    modes = [
+      "LOCAL_DOCKER_LAYER_CACHE",
+    ]
   }
 
   depends_on = [
