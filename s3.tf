@@ -1,8 +1,9 @@
 # cloudtrail
 
 resource "aws_s3_bucket" "cloudtrail" {
-  bucket = "cloudtrail-${data.aws_caller_identity.current.account_id}"
-  acl    = "private"
+  bucket        = "cloudtrail-${data.aws_caller_identity.current.account_id}"
+  acl           = "private"
+  force_destroy = true
 
   lifecycle_rule {
     enabled = true
@@ -79,8 +80,9 @@ resource "aws_s3_bucket_policy" "cloudtrail" {
 # lb log
 
 resource "aws_s3_bucket" "lb" {
-  bucket = "lb-${data.aws_caller_identity.current.account_id}"
-  acl    = "private"
+  bucket        = "lb-${data.aws_caller_identity.current.account_id}"
+  acl           = "private"
+  force_destroy = true
 
   lifecycle_rule {
     enabled = true
@@ -127,7 +129,8 @@ resource "aws_s3_bucket_policy" "lb" {
 # CodeBuild and CodePipeline bucket
 
 resource "aws_s3_bucket" "developer_tools" {
-  bucket = "developer-tools-bucket-${data.aws_caller_identity.current.account_id}"
+  bucket        = "developer-tools-bucket-${data.aws_caller_identity.current.account_id}"
+  force_destroy = true
 
   lifecycle_rule {
     enabled = true

@@ -23,7 +23,7 @@ resource "aws_ecs_service" "laravel" {
   name                               = "laravel"
   cluster                            = aws_ecs_cluster.laravel.arn
   task_definition                    = aws_ecs_task_definition.laravel.arn
-  desired_count                      = 0
+  desired_count                      = 1
   launch_type                        = "FARGATE"
   deployment_maximum_percent         = 200
   deployment_minimum_healthy_percent = 100
@@ -47,7 +47,8 @@ resource "aws_ecs_service" "laravel" {
 
   lifecycle {
     ignore_changes = [
-      "desired_count"
+      "desired_count",
+      "task_definition"
     ]
   }
 
