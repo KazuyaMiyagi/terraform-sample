@@ -1,10 +1,10 @@
 locals {
-  bitbucket_account      = "KazuyaMiyagi"
-  ecr_base_url           = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com"
-  migrator_image_tag     = "master"
-  standard_image         = "aws/codebuild/standard:2.0"
-  laravel_migrator_image = "${local.ecr_base_url}/laravel:${local.migrator_image_tag}"
-  laravel_repository     = "https://${local.bitbucket_account}@bitbucket.org/KazuyaMiyagi/test.git"
+  bitbucket_oauth_account = "KazuyaMiyagi"
+  ecr_base_url            = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com"
+  migrator_image_tag      = "master"
+  standard_image          = "aws/codebuild/standard:2.0"
+  laravel_migrator_image  = "${local.ecr_base_url}/laravel:${local.migrator_image_tag}"
+  laravel_repository      = "https://${local.bitbucket_oauth_account}@bitbucket.org/KazuyaMiyagi/test.git"
 }
 
 # container builder projects
