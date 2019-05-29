@@ -1,0 +1,31 @@
+version: 0.2
+
+##
+# These environment variables are set automatically.
+# - AWS_REGION
+# - CODEBUILD_BUILD_ARN
+# For details, please see here.
+# https://docs.aws.amazon.com/en_us/codebuild/latest/userguide/build-env-ref-env-vars.html
+env:
+  variables:
+    DOCKER_BUILDKIT: 1
+    ECR_REPOSITORY_NAME: "laravel"
+    TARGET_STAGE : "release"
+phases:
+  install:
+    runtime-versions:
+      docker: 18
+  pre_build:
+    commands:
+      # CODEBUILD_BUILD_ARN: The Amazon Resource Name (ARN) of the build (for example, arn:aws:codebuild:region-ID:account-ID:build/codebuild-demo-project:b1e6661e-e4f2-4156-9ab9-82a19EXAMPLE).
+      - AWS_ACCOUNT_ID=$(echo ${CODEBUILD_BUILD_ARN} | cut -d ':' -f 5)
+      # git describe --all for example heads/branch-name or tags/tag-name
+      - IMAGE_TAG=${IMAGE_TAG:-$(git describe --all | cut -d '/' -f 2)}
+      - $(aws ecr get-login --no-include-email --region ${AWS_REGION})
+      - if [ $IMAGE_TAG = "develop" ] ; then TARGET_STAGE="develop" ; fi
+  build:
+    commands:
+      - docker build --target ${TARGET_STAGE} -t ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY_NAME}:${IMAGE_TAG} .
+  post_build:
+    commands:
+      - docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY_NAME}:${IMAGE_TAG}
