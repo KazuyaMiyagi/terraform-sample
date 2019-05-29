@@ -47,7 +47,7 @@ data "aws_iam_policy_document" "allow_ssm_get_parameters" {
 # CodeBuild IAM
 
 resource "aws_iam_role" "codebuild" {
-  name               = "CodeBuildExecutionRole"
+  name               = "codeBuildExecutionRole"
   assume_role_policy = data.aws_iam_policy_document.codebuild_assume_role.json
 }
 
@@ -174,7 +174,7 @@ data "aws_iam_policy_document" "codebuild_vpc" {
 # CodePipeline IAM
 
 resource "aws_iam_role" "codepipeline" {
-  name               = "CodepipelineExecutionRole"
+  name               = "codePipelineExecutionRole"
   assume_role_policy = data.aws_iam_policy_document.codepipeline_assume_role.json
 }
 
