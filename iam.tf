@@ -1,5 +1,5 @@
 resource "aws_iam_role" "ecs_task_execution_role" {
-  name               = "ecsTaskExecutionRole"
+  name               = "EcsTaskExecutionRole"
   assume_role_policy = data.aws_iam_policy_document.ecs_task_execution_role_assume_role.json
 }
 
@@ -47,7 +47,7 @@ data "aws_iam_policy_document" "allow_ssm_get_parameters" {
 # CodeBuild IAM
 
 resource "aws_iam_role" "codebuild" {
-  name               = "codeBuildExecutionRole"
+  name               = "CodeBuildExecutionRole"
   assume_role_policy = data.aws_iam_policy_document.codebuild_assume_role.json
 }
 
@@ -174,7 +174,7 @@ data "aws_iam_policy_document" "codebuild_vpc" {
 # CodePipeline IAM
 
 resource "aws_iam_role" "codepipeline" {
-  name               = "codePipelineExecutionRole"
+  name               = "CodePipelineExecutionRole"
   assume_role_policy = data.aws_iam_policy_document.codepipeline_assume_role.json
 }
 
