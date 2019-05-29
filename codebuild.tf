@@ -1,8 +1,8 @@
 locals {
-  ecr_base_url         = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com"
-  deploy_image_tag     = "develop"
-  standard_image       = "aws/codebuild/standard:2.0"
-  laravel_deploy_image = "${local.ecr_base_url}/laravel:${local.deploy_image_tag}"
+  ecr_base_url           = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com"
+  deploy_image_tag       = "develop"
+  standard_image         = "aws/codebuild/standard:2.0"
+  laravel_migrator_image = "${local.ecr_base_url}/laravel:${local.deploy_image_tag}"
 }
 
 # container builder projects
