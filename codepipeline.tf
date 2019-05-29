@@ -1,7 +1,5 @@
 resource "aws_codepipeline" "laravel_deploy_pipeline" {
-  name = "laravel-deploy-pipeline"
-
-  # hoge
+  name     = "laravel-deploy-pipeline"
   role_arn = aws_iam_role.codepipeline.arn
 
   artifact_store {
@@ -20,7 +18,7 @@ resource "aws_codepipeline" "laravel_deploy_pipeline" {
       version   = "1"
 
       configuration = {
-        ImageTag       = local.migrator_image_tag
+        ImageTag       = local.deploy_image_tag
         RepositoryName = aws_ecr_repository.laravel.name
       }
 
