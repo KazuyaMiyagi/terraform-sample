@@ -71,7 +71,12 @@ resource "aws_codepipeline" "laravel_deploy_pipeline" {
     }
 
     action {
-      category = "Deploy"
+      name      = "Deploy"
+      category  = "Deploy"
+      owner     = "AWS"
+      provider  = "ECS"
+      run_order = "2"
+      version   = "1"
 
       configuration = {
         ClusterName = aws_ecs_cluster.laravel.name
@@ -82,16 +87,11 @@ resource "aws_codepipeline" "laravel_deploy_pipeline" {
       input_artifacts = [
         "ConfigArtifact",
       ]
-
-      name      = "Deploy"
-      owner     = "AWS"
-      provider  = "ECS"
-      run_order = "2"
-      version   = "1"
     }
   }
 
   depends_on = [
     "aws_iam_role.codepipeline",
+    "aws_codebuild_project.laravel_config_file_maker"
   ]
 }
