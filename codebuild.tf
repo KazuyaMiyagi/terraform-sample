@@ -1,10 +1,8 @@
 locals {
-  bitbucket_oauth_account = "KazuyaMiyagi"
-  ecr_base_url            = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com"
-  migrator_image_tag      = "develop"
-  standard_image          = "aws/codebuild/standard:2.0"
-  laravel_migrator_image  = "${local.ecr_base_url}/laravel:${local.migrator_image_tag}"
-  laravel_repository      = "https://${local.bitbucket_oauth_account}@bitbucket.org/KazuyaMiyagi/test.git"
+  ecr_base_url           = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com"
+  migrator_image_tag     = "develop"
+  standard_image         = "aws/codebuild/standard:2.0"
+  laravel_migrator_image = "${local.ecr_base_url}/laravel:${local.migrator_image_tag}"
 }
 
 # container builder projects
@@ -17,7 +15,7 @@ resource "aws_codebuild_project" "laravel_container_builder" {
   source {
     git_clone_depth     = 1
     insecure_ssl        = false
-    location            = local.laravel_repository
+    location            = var.laravel_repository
     report_build_status = false
     type                = "BITBUCKET"
     buildspec           = <<BUILDSPEC
@@ -113,36 +111,6 @@ BUILDSPEC
       value = "/laravel/DB_CONNECTION"
       type  = "PARAMETER_STORE"
     }
-
-#    environment_variable {
-#      name  = "DB_HOST"
-#      value = "/laravel/DB_HOST"
-#      type  = "PARAMETER_STORE"
-#    }
-#
-#    environment_variable {
-#      name  = "DB_PORT"
-#      value = "/laravel/DB_PORT"
-#      type  = "PARAMETER_STORE"
-#    }
-#
-#    environment_variable {
-#      name  = "DB_DATABASE"
-#      value = "/laravel/DB_DATABASE"
-#      type  = "PARAMETER_STORE"
-#    }
-#
-#    environment_variable {
-#      name  = "DB_USERNAME"
-#      value = "/laravel/DB_USERNAME"
-#      type  = "PARAMETER_STORE"
-#    }
-#
-#    environment_variable {
-#      name  = "DB_PASSWORD"
-#      value = "/laravel/DB_PASSWORD"
-#      type  = "PARAMETER_STORE"
-#    }
   }
 
   vpc_config {

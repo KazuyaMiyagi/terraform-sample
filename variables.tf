@@ -1,3 +1,7 @@
+variable "laravel_repository" {
+  type = string
+}
+
 variable "laravel_environments" {
   type = map(string)
   default = {
