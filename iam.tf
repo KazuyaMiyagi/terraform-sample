@@ -349,3 +349,50 @@ resource "aws_iam_policy" "codepipeline" {
 }
 JSON
 }
+
+# CloudWatch IAM
+
+resource "aws_iam_role" "start_pipeline" {
+  name = "StartPipeline"
+  assume_role_policy = data.aws_iam_policy_document.start_pipeline_assume_role.json
+}
+
+data "aws_iam_policy_document" "start_pipeline_assume_role" {
+  statement {
+    actions = [
+      "sts:AssumeRole",
+    ]
+
+    principals {
+      type = "Service"
+
+      identifiers = [
+        "events.amazonaws.com",
+      ]
+    }
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "start_pipeline_attached_policy_1" {
+  role = aws_iam_role.start_pipeline.name
+  policy_arn = aws_iam_policy.start_pipeline.arn
+}
+
+resource "aws_iam_policy" "start_pipeline" {
+  name = "StartPipelinePolicy"
+  policy = data.aws_iam_policy_document.start_pipeline.json
+}
+
+data "aws_iam_policy_document" "start_pipeline" {
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "codepipeline:StartPipelineExecution"
+    ]
+
+    resources = [
+      "arn:aws:codepipeline:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:*"
+    ]
+  }
+}
